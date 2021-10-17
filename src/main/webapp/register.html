@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bulma.min.css">
+    <title>Title</title>
+</head>
+
+<body>
+<div class="container" style="margin-top: 300px;width: 500px;">
+    <figure class="image container is-128x128">
+        <img src="img/Sunrise.jpg" class="is-rounded" style="-webkit-user-drag: none">
+    </figure>
+    <form name="thisform" method="post">
+        <div class="field">
+            <label class="label">Username</label>
+            <div class="control">
+                <input class="input is-primary" type="text" name="username" placeholder="Username">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Userid</label>
+            <div class="control">
+                <input class="input is-link" type="text" name="userid" placeholder="Userid">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Password</label>
+            <div class="control">
+                <input class="input is-info" type="password" name="password" placeholder="Password">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Code</label>
+            <div class="columns">
+                <div class="column is-four-fifths">
+                    <input class="input is-success" type="text" name="code" placeholder="Code">
+                </div>
+                <div class="column">
+                    <img src="code-servlet" class="image" style="margin-top: 5px" onclick="refresh(this)">
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-grouped is-grouped-centered">
+            <div class="control">
+                <button class="button is-info" type="submit" onclick="formSub('register')">注册</button>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+</body>
+
+<script>
+    function formSub(url) {
+        document.thisform.action = url;
+        document.thisform.submit();
+    }
+
+    function refresh(obj) {
+        obj.src = "code-servlet?id=" + Math.random();
+    }
+</script>
+
+</html>

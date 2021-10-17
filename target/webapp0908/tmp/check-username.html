@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/bulma.min.css">
+
+    <style>
+        body {
+            background: #f8f8f8;
+        }
+    </style>
+</head>
+<body>
+
+<div class="section">
+    <div class="columns">
+        <div class="column is-3 box container">
+            <form method="post" id="thisfrom">
+                <div class="field">
+                    <label class="label">电子邮箱</label>
+                    <input class="input" id="mail" name="mail">
+                    <div class="heading" id="mailMsg"></div>
+                </div>
+                <div class="field">
+                    <label class="label">密码</label>
+                    <input class="input" name="password" id="password">
+                </div>
+                <div class="level">
+                    <div class="level-item">
+                        <button class="button">tmp</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // 前端获取当前项目的上下文
+    function getContextPath() {
+        var pathName = document.location.pathname;
+        var index = pathName.substr(1).indexOf("/");
+        var result = pathName.substr(0, index + 1);
+        return result;
+    }
+
+    function checkMail() {
+        var xhr = new XMLHttpRequest();
+        var input = document.getElementById("mail");
+        var mail = input.value;
+        var url = getContextPath() + "/is-existing-mail" + "?mail=" + mail;
+        console.log(mail);
+        console.log(url);
+        xhr.open('GET', url, false);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.status == 200 || xhr.status == 304) {
+                var msg = xhr.responseText;
+                msg = eval(msg); // 解析后端传来的JSON串
+                // console.log(msg);
+                if (msg == "该邮箱可以使用") {
+                    // console.log(2);
+                    input.setAttribute("class", "input is-success");
+                } else {
+                    // console.log(1);
+                    input.setAttribute("class", "input is-danger")
+                }
+                document.getElementById("mailMsg").innerText = msg;
+            }
+        }
+
+        xhr.send();
+    }
+
+    // jQuery实现Ajax
+    $("#mail").blur(function () {
+        var data = {};
+        data["mail"] = $("#mail").val();
+
+        $.ajax({
+            type: "GET",
+            url: getContextPath() + "/is-existing-mail",
+            data: data,
+            dataType: "json",
+            success: function (msg) {
+                console.log(msg);
+                if (msg == "该邮箱可以使用") {
+                    $("#mail").attr('class', "input is-success")
+                } else {
+                    $("#mail").attr("class", "input is-danger")
+                }
+                $("#mailMsg").text(msg);
+            }
+        })
+    })
+</script>
+</body>
+</html>
